@@ -1,0 +1,46 @@
+graph TD
+    subgraph Capa_UI [Capa de Presentación UI]
+        UI_Login[Login y Roles]
+        UI_Users[Gestión de Usuarios]
+        UI_CRUD[CRUD Parcelas]
+    end
+
+    subgraph Capa_BLL [Capa Lógica de Negocio]
+        BLL_Test[Pruebas Unitarias]
+        BLL_Auth[Permisos y Roles]
+        BLL_Valid[Validación Fluent]
+        BLL_Router[Router de Conexión]
+    end
+
+    subgraph Capa_DAL [Capa de Acceso a Datos]
+        DAL_Local[Gestor Offline SQLite]
+        DAL_Sync[Sincronización]
+        DAL_MySQL[Conector MySQL]
+    end
+
+    subgraph Fuentes [Fuentes de Datos]
+        DB_Local[(Local Temporal)]
+        DB_Main[(Base de Datos MySQL)]
+    end
+
+    %% Conexiones UI -> BLL
+    UI_Login --> BLL_Auth
+    UI_Users --> BLL_Valid
+    UI_CRUD --> BLL_Valid
+    BLL_Test -.-> BLL_Valid
+
+    %% Conexiones Internas BLL
+    BLL_Auth --> BLL_Router
+    BLL_Valid --> BLL_Router
+
+    %% Conexiones BLL -> DAL
+    BLL_Router -- Sin red --> DAL_Local
+    BLL_Router -- Con red --> DAL_MySQL
+
+    %% Conexiones DAL
+    DAL_Local --> DAL_Sync
+    DAL_Sync --> DAL_MySQL
+
+    %% Conexiones a BD
+    DAL_Local --> DB_Local
+    DAL_MySQL --> DB_Main
