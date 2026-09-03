@@ -1,0 +1,59 @@
+<ui:FluentWindow x:Class="AgroTech.UI.Dashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="AgroTech SmartFields - Dashboard" Height="600" Width="900"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        WindowCornerPreference="Round"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <ui:TitleBar Title="🌱 AgroTech - Panel Principal" Grid.Row="0" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Menú Lateral Básico -->
+            <StackPanel Grid.Column="0" Background="#0AFFFFFF">
+                <ui:Button Content="Parcelas" Icon="{ui:SymbolIcon Map24}" Appearance="Transparent" HorizontalAlignment="Stretch" Margin="10,20,10,5"/>
+                <ui:Button Content="Cultivos" Icon="{ui:SymbolIcon Leaf24}" Appearance="Transparent" HorizontalAlignment="Stretch" Margin="10,5,10,5"/>
+            </StackPanel>
+
+            <!-- Contenido Principal -->
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,20">
+                    <ui:TextBlock FontTypography="Subtitle" Text="Gestión de Parcelas" VerticalAlignment="Center"/>
+                    <ui:Button Content="Nueva Parcela" Icon="{ui:SymbolIcon Add24}" Appearance="Primary" Margin="20,0,0,0" Click="NuevaParcela_Click"/>
+                </StackPanel>
+
+                <!-- DataGrid para Parcelas (MVP) -->
+                <DataGrid x:Name="GridParcelas" Grid.Row="1" AutoGenerateColumns="False" 
+                          CanUserAddRows="False" IsReadOnly="True" 
+                          Background="Transparent" RowBackground="#11FFFFFF" AlternatingRowBackground="#22FFFFFF"
+                          HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding IdParcela}" Width="50"/>
+                        <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
+                        <DataGridTextColumn Header="Ubicación" Binding="{Binding Ubicacion}" Width="150"/>
+                        <DataGridTextColumn Header="Dimensiones (m2)" Binding="{Binding DimensionesM2}" Width="120"/>
+                        <DataGridTextColumn Header="Fecha Registro" Binding="{Binding FechaRegistro, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

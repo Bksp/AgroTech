@@ -12,7 +12,19 @@ namespace AgroTech.UI
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Inicio de sesión simulado. (Próximamente conexión a DB)", "AgroTech", MessageBoxButton.OK, MessageBoxImage.Information);
+            var authService = new AgroTech.BLL.AuthService();
+            var user = authService.Authenticate(txtUsername.Text, txtPassword.Password);
+
+            if (user != null)
+            {
+                var dashboard = new Dashboard();
+                dashboard.Show();
+                this.Close();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Credenciales incorrectas.", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
     }
 }
