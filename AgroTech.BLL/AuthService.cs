@@ -10,7 +10,7 @@ namespace AgroTech.BLL
         {
             using (var db = new AgroTechDbContext())
             {
-                // Simple MVP validation (in a real app, hash the password and compare)
+                // Mejorar el sistema de validacion xd
                 var user = db.Usuarios.FirstOrDefault(u => u.CorreoElectronico == email && u.PasswordHash == password);
                 return user;
             }

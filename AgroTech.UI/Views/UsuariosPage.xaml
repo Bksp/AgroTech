@@ -1,0 +1,82 @@
+﻿<Page x:Class="AgroTech.UI.Views.UsuariosPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="UsuariosPage">
+    
+    <Grid Margin="30,20,30,20" TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TextBlock FontTypography="Title" Text="Gestión de Usuarios del Sistema" Margin="0,0,0,20" Grid.Row="0"/>
+
+        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="20" Grid.Row="1" Margin="0,0,0,20">
+            <StackPanel>
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Nombre de Usuario (Único)" Margin="0,0,0,5"/>
+                        <ui:TextBox x:Name="txtUserName" PlaceholderText="Ej. afernandez"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Correo Electrónico" Margin="0,0,0,5"/>
+                        <ui:TextBox x:Name="txtCorreo" PlaceholderText="usuario@agrotech.cl"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Rol del Sistema" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="cmbRoles" Height="35">
+                            <ComboBoxItem Content="Seleccione un rol..." IsSelected="True"/>
+                            <ComboBoxItem Content="Administrador"/>
+                            <ComboBoxItem Content="Supervisor"/>
+                            <ComboBoxItem Content="Trabajador"/>
+                            <ComboBoxItem Content="Encargado de Producción"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Contraseña Temporal" Margin="0,0,0,5"/>
+                        <ui:PasswordBox x:Name="txtPassTemp" PlaceholderText="***"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ui:Button Content="Eliminar Usuario" Appearance="Danger" Margin="0,0,10,0" Click="EliminarUsuario_Click" Icon="{ui:SymbolIcon Delete24}"/>
+                    <ui:Button Content="Modificar" Appearance="Caution" Margin="0,0,10,0" Click="ModificarUsuario_Click" Icon="{ui:SymbolIcon Edit24}"/>
+                    <ui:Button Content="Registrar Usuario" Appearance="Primary" Click="RegistrarUsuario_Click" Icon="{ui:SymbolIcon PersonAdd24}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
+            <DataGrid x:Name="GridUsuarios" AutoGenerateColumns="False" 
+                      CanUserAddRows="False" IsReadOnly="True" 
+                      Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
+                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding IdUsuario}" Width="50"/>
+                    <DataGridTextColumn Header="Nombre Completo" Binding="{Binding NombreCompleto}" Width="*"/>
+                    <DataGridTextColumn Header="Correo Electrónico" Binding="{Binding CorreoElectronico}" Width="250"/>
+                    <DataGridTextColumn Header="Rol" Binding="{Binding Rol.Nombre}" Width="150"/>
+                    <DataGridTextColumn Header="Fecha Registro" Binding="{Binding FechaRegistro, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</Page>
+

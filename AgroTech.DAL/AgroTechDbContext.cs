@@ -14,7 +14,7 @@ namespace AgroTech.DAL
 
         public AgroTechDbContext()
         {
-            // Create database if not exists (offline MVP)
+            // Esto crea una bbdd si no existe (MVP/Modo Offline)
             Database.EnsureCreated();
         }
 
