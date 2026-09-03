@@ -1,4 +1,4 @@
-# AgroTech SmartFields
+﻿# AgroTech SmartFields
 
 AgroTech SmartFields es una aplicación de escritorio moderna desarrollada en **WPF** (.NET 10) con arquitectura de N-Capas (DAL, BLL, UI) utilizando **Entity Framework Core** y **SQLite**. Está diseñada con los estilos y directrices visuales nativos de Windows 11 mediante WPF-UI.
 
@@ -14,20 +14,20 @@ Para poder compilar y ejecutar este proyecto, necesitas tener instalado:
 Sigue estos pasos para clonar y ejecutar el proyecto en tu máquina local:
 
 1. **Clonar el repositorio:**
-   `hash
+   `bash
    git clone git@github.com:Bksp/AgroTech.git
    cd AgroTech
    `
 
 2. **Restaurar las dependencias y compilar:**
-   `hash
+   `bash
    dotnet restore
    dotnet build
    `
 
 3. **Ejecutar la aplicación:**
    Puedes iniciar la aplicación directamente desde la línea de comandos ejecutando el proyecto de la Interfaz de Usuario (UI):
-   `hash
+   `bash
    dotnet run --project AgroTech.UI/AgroTech.UI.csproj
    `
    *Alternativamente, puedes abrir la solución AgroTech.sln en Visual Studio 2022, establecer AgroTech.UI como proyecto de inicio y presionar F5.*
@@ -40,9 +40,9 @@ Puedes utilizar cualquiera de las siguientes cuentas para acceder al **Dashboard
 
 | Rol                     | Correo Electrónico                | Contraseña |
 | ----------------------- | --------------------------------- | ---------- |
-| Administrador del Sist. | admin@agrotech.cl               | admin123 |
-| Supervisor              | carlos.supervisor@agrotech.cl   | carlos123|
-| Trabajador en Terreno   | juan.trabajador@agrotech.cl     | juan123  |
+| Administrador del Sist. | admin@agrotech.cl                 | admin123   |
+| Supervisor              | carlos.supervisor@agrotech.cl     | carlos123  |
+| Trabajador en Terreno   | juan.trabajador@agrotech.cl       | juan123    |
 
 ## Arquitectura del Proyecto
 
