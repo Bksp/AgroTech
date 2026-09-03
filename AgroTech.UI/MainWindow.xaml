@@ -10,7 +10,8 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="Assets/logo.png">
     
     <Grid>
         <ui:TitleBar Title="🌱 AgroTech" />

@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="AgroTech.BLL/AgroTech.BLL.csproj" />
-  <Project Path="AgroTech.DAL/AgroTech.DAL.csproj" />
-  <Project Path="AgroTech.UI/AgroTech.UI.csproj" />
-</Solution>

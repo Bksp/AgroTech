@@ -6,7 +6,8 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="Assets/logo.png">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -25,7 +26,7 @@
             <!-- Menú Lateral Básico -->
             <StackPanel Grid.Column="0" Background="#0AFFFFFF">
                 <ui:Button Content="Parcelas" Icon="{ui:SymbolIcon Map24}" Appearance="Transparent" HorizontalAlignment="Stretch" Margin="10,20,10,5"/>
-                <ui:Button Content="Cultivos" Icon="{ui:SymbolIcon Leaf24}" Appearance="Transparent" HorizontalAlignment="Stretch" Margin="10,5,10,5"/>
+                <ui:Button Content="Cultivos" Icon="{ui:SymbolIcon Grid24}" Appearance="Transparent" HorizontalAlignment="Stretch" Margin="10,5,10,5"/>
             </StackPanel>
 
             <!-- Contenido Principal -->
