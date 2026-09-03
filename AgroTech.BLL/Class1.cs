@@ -1,6 +1,6 @@
-﻿namespace AgroTech.BLL;
-
-public class Class1
+namespace AgroTech.BLL
 {
-
+    public class Class1
+    {
+    }
 }

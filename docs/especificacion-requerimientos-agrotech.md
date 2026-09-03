@@ -11,7 +11,7 @@ Para asegurar la calificación máxima, cada componente del software se mapea di
 | Criterio de la Rúbrica (Nivel Sobresaliente) | Requisito del Proyecto | Mapeo en el Software e Implementación |
 | :--- | :--- | :--- |
 | **CE2N2 - Condiciones del Proceso:** "Programa el prototipo considerando requerimientos, resolviendo la problemática, identificando errores y realizando pruebas rigurosas." | Resolver el control agrícola de hortalizas y evitar registros manuales. | Aplicación de escritorio nativa conectada a **MySQL**, con manejo del flujo alterno offline para evitar la pérdida de datos y un sistema robusto de captura de excepciones en cada capa. |
-| **CE2N2 - Desempeño Acciones:** "Desarrolla el software usando componentes gráficos de aplicación, generando documentación interna y externa, y construyendo pruebas unitarias." | Interfaz de escritorio, código comentado y pruebas de componentes. | Interfaz en **C# Windows Forms (con diseño moderno o Material Design)**, uso de librerías de validación como **FluentValidation**, comentarios estructurados (XML docs) y módulo de pruebas unitarias en la capa lógica (**BLL_Test**). |
+| **CE2N2 - Desempeño Acciones:** "Desarrolla el software usando componentes gráficos de aplicación, generando documentación interna y externa, y construyendo pruebas unitarias." | Interfaz de escritorio, código comentado y pruebas de componentes. | Interfaz en **C# WPF (con patrón MVVM y diseño Glassmorphism)**, uso de librerías de validación como **FluentValidation**, comentarios estructurados (XML docs) y módulo de pruebas unitarias en la capa lógica (**BLL_Test**). |
 | **CE2N2 - Cumplimiento de Estándares:** "Presenta la lógica desarrollada, satisface las necesidades de clientes, aplica estándares de documentación y garantiza alta calidad de código y arquitectura." | Estructura del programa organizada y de nivel industrial. | Implementación de **Arquitectura de 3 Capas (N-Tier)**: Presentación (UI), Lógica de Negocio (BLL) y Acceso a Datos (DAL). Esto aísla la lógica para facilitar pruebas independientes y el mantenimiento. |
 | **CEMN2 - Empleabilidad (Resolución de Problemas y Trabajo Colaborativo):** Ponderación del 30% mediante el Informe Reflexivo grupal. | Proceso deductivo, metas claras, comunicación asertiva y coordinación. | Registro del avance en la bitácora técnica, asignación clara de roles en la arquitectura de 3 capas y desarrollo del informe con 3 causas, acciones preventivas y beneficios de coordinación. |
 
@@ -107,11 +107,11 @@ Para asegurar la calificación máxima, cada componente del software se mapea di
 
 ## 3. Arquitectura del Sistema (N-Tier - 3 Capas)
 
-Para separar el trabajo de los desarrolladores de forma eficiente y cumplir con la rúbrica respecto a una **"arquitectura del programa de alta calidad"**, se adopta un diseño en **3 Capas (UI, BLL, DAL)** bajo el ecosistema de **.NET 8.0**:
+Para separar el trabajo de los desarrolladores de forma eficiente y cumplir con la rúbrica respecto a una **"arquitectura del programa de alta calidad"**, se adopta un diseño en **3 Capas (UI, BLL, DAL)** bajo el ecosistema de **.NET 5.0** (por compatibilidad del SDK local):
 
 ### Capa de Presentación (AgroTech.UI)
 * **Responsabilidad:** Maneja exclusivamente la interfaz visual de escritorio, captura las interacciones del usuario y dibuja las notificaciones o ventanas de error.
-* **Tecnología:** Windows Forms (WinForms C#) utilizando componentes enriquecidos de diseño y controles interactivos (`DateTimePicker`, `NumericUpDown`, `TabControl`, etc.).
+* **Tecnología:** WPF (Windows Presentation Foundation) utilizando el patrón de diseño **MVVM**, con componentes enriquecidos, transparencias y diseño Glassmorphism de Windows 11.
 
 ### Capa de Lógica de Negocio (AgroTech.BLL)
 * **Responsabilidad:** Centraliza los procesos de decisión y de validación de reglas de negocio. Aquí vive la inteligencia del software, asegurando que los datos sean lícitos antes de enviarlos a persistir. No se comunica de forma directa con la base de datos, sino a través de la capa de acceso a datos.
@@ -136,7 +136,7 @@ El siguiente diagrama modela el flujo de información, la separación de respons
 
 ```mermaid
 graph TD
-    subgraph Capa_UI [Capa de Presentación UI - WinForms]
+    subgraph Capa_UI [Capa de Presentación UI - WPF (MVVM)]
         UI_Login[Login y Control de Roles]
         UI_Users[Formularios CRUD Usuarios]
         UI_CRUD[Formularios CRUD Parcelas y Cultivos]
