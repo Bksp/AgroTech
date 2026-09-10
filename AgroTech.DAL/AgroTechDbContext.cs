@@ -1,7 +1,5 @@
 using AgroTech.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.IO;
 
 namespace AgroTech.DAL
 {
@@ -12,44 +10,99 @@ namespace AgroTech.DAL
         public DbSet<Parcela> Parcelas { get; set; } = null!;
         public DbSet<Cultivo> Cultivos { get; set; } = null!;
 
-        public AgroTechDbContext()
-        {
-            // Esto crea una bbdd si no existe (MVP/Modo Offline)
-            Database.EnsureCreated();
-        }
+
+        private const string Server = "localhost";
+        private const string Port = "3306";
+        private const string Database = "agrotech_db";
+        private const string UserId = "root";
+        private const string Password = "";
+
+        public static string ConnectionString =>
+            $"Server={Server};Port={Port};Database={Database};User Id={UserId};Password={Password};";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Usando SQLite local como dicta la rúbrica para el MVP / Modo Offline
-            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "agrotech.db");
-            optionsBuilder.UseSqlite($"Data Source={dbPath}");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql(
+                    ConnectionString,
+                    ServerVersion.AutoDetect(ConnectionString));
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuracion de Tablas y PK
-            modelBuilder.Entity<Rol>().HasKey(r => r.IdRol);
-            modelBuilder.Entity<Usuario>().HasKey(u => u.IdUsuario);
-            modelBuilder.Entity<Parcela>().HasKey(p => p.IdParcela);
-            modelBuilder.Entity<Cultivo>().HasKey(c => c.IdCultivo);
+            //---------------- Roles ----------------
+            modelBuilder.Entity<Rol>(entity =>
+            {
+                entity.ToTable("Roles");
+                entity.HasKey(r => r.IdRol);
+                entity.Property(r => r.IdRol).HasColumnName("id_rol");
+                entity.Property(r => r.NombreRol).HasColumnName("nombre_rol");
+                entity.Property(r => r.Descripcion).HasColumnName("descripcion");
+            });
 
-            // Seed Data (Simulando la BBDD Real)
-            modelBuilder.Entity<Rol>().HasData(
-                new Rol { IdRol = 1, NombreRol = "Administrador", Descripcion = "Control total" },
-                new Rol { IdRol = 2, NombreRol = "Supervisor", Descripcion = "Gestiona parcelas" },
-                new Rol { IdRol = 3, NombreRol = "Trabajador", Descripcion = "Acceso operativo" }
-            );
+            //---------------- Usuarios ----------------
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.ToTable("Usuarios");
+                entity.HasKey(u => u.IdUsuario);
+                entity.Property(u => u.IdUsuario).HasColumnName("id_usuario");
+                entity.Property(u => u.IdRol).HasColumnName("id_rol");
+                entity.Property(u => u.NombreCompleto).HasColumnName("nombre_completo");
+                entity.Property(u => u.CorreoElectronico).HasColumnName("correo_electronico");
+                entity.Property(u => u.PasswordHash).HasColumnName("password_hash");
+                entity.Property(u => u.Estado).HasColumnName("estado");
+                entity.Property(u => u.FechaCreacion).HasColumnName("fecha_creacion");
 
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario { IdUsuario = 1, IdRol = 1, NombreCompleto = "Admin Sistema", CorreoElectronico = "admin@agrotech.cl", PasswordHash = "password", FechaCreacion = DateTime.Now },
-                new Usuario { IdUsuario = 2, IdRol = 2, NombreCompleto = "Carlos Producción", CorreoElectronico = "carlos.supervisor@agrotech.cl", PasswordHash = "password", FechaCreacion = DateTime.Now },
-                new Usuario { IdUsuario = 3, IdRol = 3, NombreCompleto = "Juan Terreno", CorreoElectronico = "juan.trabajador@agrotech.cl", PasswordHash = "password", FechaCreacion = DateTime.Now }
-            );
+                entity.HasOne(u => u.Rol)
+                      .WithMany()
+                      .HasForeignKey(u => u.IdRol)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
 
-            modelBuilder.Entity<Parcela>().HasData(
-                new Parcela { IdParcela = 1, Nombre = "Sector Norte A1", Ubicacion = "Maule", DimensionesM2 = 255000, RegistradoPor = 1, FechaRegistro = DateTime.Now },
-                new Parcela { IdParcela = 2, Nombre = "Sector Sur B2", Ubicacion = "Ñuble", DimensionesM2 = 400000, RegistradoPor = 2, FechaRegistro = DateTime.Now }
-            );
+            //---------------- Parcelas ----------------
+            modelBuilder.Entity<Parcela>(entity =>
+            {
+                entity.ToTable("Parcelas");
+                entity.HasKey(p => p.IdParcela);
+                entity.Property(p => p.IdParcela).HasColumnName("id_parcela");
+                entity.Property(p => p.Nombre).HasColumnName("nombre");
+                entity.Property(p => p.Ubicacion).HasColumnName("ubicacion");
+                entity.Property(p => p.DimensionesM2).HasColumnName("dimensiones_m2").HasColumnType("decimal(12,2)");
+                entity.Property(p => p.RegistradoPor).HasColumnName("registrado_por");
+                entity.Property(p => p.FechaRegistro).HasColumnName("fecha_registro");
+
+                entity.HasOne(p => p.RegistradoPorUsuario)
+                      .WithMany()
+                      .HasForeignKey(p => p.RegistradoPor)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            //---------------- Cultivos ----------------
+            modelBuilder.Entity<Cultivo>(entity =>
+            {
+                entity.ToTable("Cultivos");
+                entity.HasKey(c => c.IdCultivo);
+                entity.Property(c => c.IdCultivo).HasColumnName("id_cultivo");
+                entity.Property(c => c.IdParcela).HasColumnName("id_parcela");
+                entity.Property(c => c.TipoCultivo).HasColumnName("tipo_cultivo");
+                entity.Property(c => c.FechaSiembra).HasColumnName("fecha_siembra");
+                entity.Property(c => c.FechaEstimadaCosecha).HasColumnName("fecha_estimada_cosecha");
+                entity.Property(c => c.Estado).HasColumnName("estado");
+                entity.Property(c => c.RegistradoPor).HasColumnName("registrado_por");
+                entity.Property(c => c.FechaRegistro).HasColumnName("fecha_registro");
+
+                entity.HasOne(c => c.Parcela)
+                      .WithMany(p => p.Cultivos)
+                      .HasForeignKey(c => c.IdParcela)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(c => c.RegistradoPorUsuario)
+                      .WithMany()
+                      .HasForeignKey(c => c.RegistradoPor)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

@@ -9,8 +9,9 @@ namespace AgroTech.DAL.Models
         public string NombreCompleto { get; set; } = string.Empty;
         public string CorreoElectronico { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
+        public string Estado { get; set; } = "Activo"; 
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
-        
+
         public Rol? Rol { get; set; }
     }
 }

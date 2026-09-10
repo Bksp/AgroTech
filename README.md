@@ -1,53 +1,64 @@
 ﻿# AgroTech SmartFields
 
-AgroTech SmartFields es una aplicación de escritorio moderna desarrollada en **WPF** (.NET 10) con arquitectura de N-Capas (DAL, BLL, UI) utilizando **Entity Framework Core** y **SQLite**. Está diseñada con los estilos y directrices visuales nativos de Windows 11 mediante WPF-UI.
+AgroTech SmartFields es una aplicación de escritorio desarrollada en **WPF** (.NET 10) con arquitectura de N-Capas (DAL, BLL, UI), usando **Entity Framework Core** contra una base de datos **MySQL local** (vía Pomelo.EntityFrameworkCore.MySql), tal como lo exige el documento de requisitos (Restricción: motor MySQL local, script `.sql`). La interfaz usa los estilos nativos de Windows 11 mediante WPF-UI.
 
 ## Requisitos Previos
 
-Para poder compilar y ejecutar este proyecto, necesitas tener instalado:
-
 1. [Visual Studio 2022](https://visualstudio.microsoft.com/es/vs/) (recomendado) o Visual Studio Code.
 2. [SDK de .NET 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0).
+3. **Servidor MySQL local** (8.0+) corriendo — por ejemplo XAMPP, WAMP, o MySQL Server + MySQL Workbench.
 
 ## Cómo Levantar el Proyecto
 
-Sigue estos pasos para clonar y ejecutar el proyecto en tu máquina local:
+### 1. Levantar la base de datos
 
-1. **Clonar el repositorio:**
-   `bash
-   git clone git@github.com:Bksp/AgroTech.git
-   cd AgroTech
-   `
+Con tu servidor MySQL corriendo, ejecuta el script completo en `docs/bbdd.sql` (por ejemplo desde MySQL Workbench, o por línea de comandos):
 
-2. **Restaurar las dependencias y compilar:**
-   `bash
-   dotnet restore
-   dotnet build
-   `
+```bash
+mysql -u root -p < docs/bbdd.sql
+```
 
-3. **Ejecutar la aplicación:**
-   Puedes iniciar la aplicación directamente desde la línea de comandos ejecutando el proyecto de la Interfaz de Usuario (UI):
-   `bash
-   dotnet run --project AgroTech.UI/AgroTech.UI.csproj
-   `
-   *Alternativamente, puedes abrir la solución AgroTech.sln en Visual Studio 2022, establecer AgroTech.UI como proyecto de inicio y presionar F5.*
+Esto crea la base `agrotech_db`, las 4 tablas con sus `CHECK` y `FOREIGN KEY ... ON DELETE RESTRICT`, y siembra Roles + 3 Usuarios de prueba + Parcelas + Cultivos de ejemplo.
 
-## Credenciales de Acceso (Modo Pruebas)
+### 2. Configurar la cadena de conexión
 
-Al iniciar la aplicación por primera vez, la base de datos de SQLite (agrotech.db) se generará automáticamente e insertará algunos datos semilla (Seed Data) para facilitar el testing de la interfaz.
+Abre `AgroTech.DAL/AgroTechDbContext.cs` y ajusta las constantes al inicio del archivo (`Server`, `Port`, `UserId`, `Password`) según tu instalación local de MySQL. Por defecto asume `localhost:3306`, usuario `root` sin contraseña.
 
-Puedes utilizar cualquiera de las siguientes cuentas para acceder al **Dashboard**:
+### 3. Restaurar, compilar y ejecutar
 
-| Rol                     | Correo Electrónico                | Contraseña |
-| ----------------------- | --------------------------------- | ---------- |
-| Administrador del Sist. | admin@agrotech.cl                 | admin123   |
-| Supervisor              | carlos.supervisor@agrotech.cl     | carlos123  |
-| Trabajador en Terreno   | juan.trabajador@agrotech.cl       | juan123    |
+```bash
+dotnet restore
+dotnet build
+dotnet run --project AgroTech.UI/AgroTech.UI.csproj
+```
+
+*Alternativamente, abre `AgroTech.sln` en Visual Studio 2022, establece `AgroTech.UI` como proyecto de inicio y presiona F5.*
+
+## Credenciales de Acceso (datos semilla de `docs/bbdd.sql`)
+
+Las contraseñas ya están guardadas como hash BCrypt real en la base de datos (RNF-02). Puedes iniciar sesión con:
+
+| Rol           | Correo Electrónico          | Contraseña    |
+| ------------- | ---------------------------- | ------------- |
+| Administrador | a.valenzuela@agrotech.cl     | `Admin123!`   |
+| Supervisor    | m.fuentes@agrotech.cl        | `Super123!`   |
+| Trabajador    | p.carrasco@agrotech.cl       | `Trabajo123!` |
+
+Se recomienda cambiar estas contraseñas (o crear usuarios reales) desde la pantalla de **Gestión de Usuarios** apenas tengas el sistema funcionando — el registro de usuarios nuevos hashea la contraseña con BCrypt automáticamente.
+
+## Reglas de acceso por rol (RBAC)
+
+* **Administrador**: único que ve y usa el módulo "Gestión de Usuarios" (alta, edición, suspensión/reactivación — no hay borrado físico, se preserva la trazabilidad).
+* **Supervisor**: acceso total a "Parcelas y Cultivos" (registrar y consultar).
+* **Trabajador**: sólo lectura en "Parcelas y Cultivos" (los campos y botones de registro aparecen deshabilitados).
 
 ## Arquitectura del Proyecto
 
-El proyecto está dividido en tres capas principales:
+* **AgroTech.DAL (Data Access Layer)**: `AgroTechDbContext.cs` (EF Core + Pomelo/MySQL, mapeado 1:1 contra `docs/bbdd.sql`), modelos (`Usuario`, `Rol`, `Parcela`, `Cultivo`) y `SessionManager.cs` (usuario logueado en memoria, para trazabilidad y RBAC).
+* **AgroTech.BLL (Business Logic Layer)**: `AuthService.cs` (login con BCrypt), `ParcelaService.cs` y `CultivoService.cs` (RF-01, validaciones de negocio), `UsuarioService.cs` (RF-02, CRUD + baja lógica).
+* **AgroTech.UI (User Interface)**: XAML + code-behind. `MainWindow` (login), `Dashboard` (navegación + RBAC), `Views/ParcelasPage` y `Views/UsuariosPage` conectadas de verdad a la base de datos (sin datos "simulados").
 
-* **AgroTech.DAL (Data Access Layer)**: Maneja la conexión con la base de datos SQLite utilizando Entity Framework Core. Contiene los modelos (Cultivo.cs, Parcela.cs, Rol.cs, Usuario.cs) y el contexto AgroTechDbContext.cs.
-* **AgroTech.BLL (Business Logic Layer)**: Contiene las reglas de negocio y validaciones. Aquí se encuentra el AuthService.cs para el login.
-* **AgroTech.UI (User Interface)**: Contiene la interfaz gráfica de usuario en XAML y Code-Behind. Emplea componentes NavigationView y temas oscuros/claros propios de Windows 11 (Fluent).
+## Pendientes conocidos (fuera del alcance de esta iteración)
+
+* RF-05 (plan de pruebas unitarias automatizado) aún no está implementado como proyecto de tests.
+* No hay una pantalla dedicada para editar/eliminar cultivos individuales (por ahora se listan y se registran junto a la parcela).

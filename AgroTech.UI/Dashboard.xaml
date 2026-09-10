@@ -13,19 +13,28 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <ui:TitleBar Title="🌱 AgroTech - Panel Principal" Grid.Row="0" />
 
+        <Border Grid.Row="1" Padding="20,8" Background="{DynamicResource ControlFillColorDefaultBrush}">
+            <DockPanel LastChildFill="False">
+                <ui:TextBlock x:Name="txtUsuarioSesion" FontTypography="BodyStrong" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <ui:Button x:Name="btnCerrarSesion" Content="Cerrar sesión" Appearance="Secondary"
+                           DockPanel.Dock="Right" Padding="10,4" Click="CerrarSesion_Click"/>
+            </DockPanel>
+        </Border>
+
         <!-- NavigationView de WPF-UI (Estilo Windows 11 Nativo) -->
-        <ui:NavigationView Grid.Row="1"
+        <ui:NavigationView Grid.Row="2"
                            x:Name="RootNavigation"
                            PaneDisplayMode="Left"
                            IsBackButtonVisible="Collapsed">
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Parcelas y Cultivos" Icon="{ui:SymbolIcon Map24}" TargetPageType="{x:Type views:ParcelasPage}" />
-                <ui:NavigationViewItem Content="Gestión de Usuarios" Icon="{ui:SymbolIcon People24}" TargetPageType="{x:Type views:UsuariosPage}" />
+                <ui:NavigationViewItem x:Name="navParcelas" Content="Parcelas y Cultivos" Icon="{ui:SymbolIcon Map24}" TargetPageType="{x:Type views:ParcelasPage}" />
+                <ui:NavigationViewItem x:Name="navUsuarios" Content="Gestión de Usuarios" Icon="{ui:SymbolIcon People24}" TargetPageType="{x:Type views:UsuariosPage}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
 

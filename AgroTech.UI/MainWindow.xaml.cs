@@ -1,5 +1,7 @@
+using System;
 using System.Windows;
-using System.Windows.Input;
+using AgroTech.BLL;
+using AgroTech.DAL;
 
 namespace AgroTech.UI
 {
@@ -12,18 +14,31 @@ namespace AgroTech.UI
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            var authService = new AgroTech.BLL.AuthService();
-            var user = authService.Authenticate(txtUsername.Text, txtPassword.Password);
+            var authService = new AuthService();
 
-            if (user != null)
+            try
             {
+                var usuario = authService.Authenticate(txtUsername.Text, txtPassword.Password);
+
+                SessionManager.IniciarSesion(usuario);
+
                 var dashboard = new Dashboard();
                 dashboard.Show();
                 this.Close();
             }
-            else
+            catch (AuthenticationException ex)
             {
-                System.Windows.MessageBox.Show("Credenciales incorrectas.", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "No fue posible iniciar sesión", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "No se pudo conectar con la base de datos MySQL. Verifica que el servidor esté levantado " +
+                    "y que hayas ejecutado docs/bbdd.sql, y revisa la cadena de conexión en AgroTechDbContext.cs.\n\n" +
+                    $"Detalle técnico: {ex.Message}",
+                    "Error de conexión",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
     }

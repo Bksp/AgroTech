@@ -70,27 +70,56 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel x:Name="panelAccionesParcela" Orientation="Horizontal" HorizontalAlignment="Right">
                     <ui:Button Content="Limpiar Campos" Appearance="Secondary" Margin="0,0,10,0" Click="LimpiarParcelas_Click"/>
                     <ui:Button Content="Guardar Registro" Appearance="Primary" Click="GuardarParcela_Click" Icon="{ui:SymbolIcon Save24}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
-            <DataGrid x:Name="GridParcelas" AutoGenerateColumns="False" 
-                      CanUserAddRows="False" IsReadOnly="True" 
-                      Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding IdParcela}" Width="50"/>
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
-                    <DataGridTextColumn Header="Ubicación" Binding="{Binding Ubicacion}" Width="150"/>
-                    <DataGridTextColumn Header="Dimensiones (m2)" Binding="{Binding DimensionesM2}" Width="120"/>
-                    <DataGridTextColumn Header="Fecha Registro" Binding="{Binding FechaRegistro, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
+                <DockPanel>
+                    <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Parcelas Registradas" Margin="5,0,0,10"/>
+                    <DataGrid x:Name="GridParcelas" AutoGenerateColumns="False"
+                              CanUserAddRows="False" IsReadOnly="True"
+                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding IdParcela}" Width="40"/>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
+                            <DataGridTextColumn Header="Ubicación" Binding="{Binding Ubicacion}" Width="130"/>
+                            <DataGridTextColumn Header="m²" Binding="{Binding DimensionesM2}" Width="90"/>
+                            <DataGridTextColumn Header="Registro" Binding="{Binding FechaRegistro, StringFormat={}{0:dd/MM/yyyy}}" Width="90"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
+                <DockPanel>
+                    <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Cultivos Registrados" Margin="5,0,0,10"/>
+                    <DataGrid x:Name="GridCultivos" AutoGenerateColumns="False"
+                              CanUserAddRows="False" IsReadOnly="True"
+                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Parcela" Binding="{Binding Parcela.Nombre}" Width="*"/>
+                            <DataGridTextColumn Header="Cultivo" Binding="{Binding TipoCultivo}" Width="110"/>
+                            <DataGridTextColumn Header="Siembra" Binding="{Binding FechaSiembra, StringFormat={}{0:dd/MM/yyyy}}" Width="90"/>
+                            <DataGridTextColumn Header="Cosecha Est." Binding="{Binding FechaEstimadaCosecha, StringFormat={}{0:dd/MM/yyyy}}" Width="90"/>
+                            <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="110"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Page>
 

@@ -12,7 +12,8 @@ namespace AgroTech.DAL.Models
         public string Estado { get; set; } = "Activo";
         public int RegistradoPor { get; set; }
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
-        
+
         public Parcela? Parcela { get; set; }
+        public Usuario? RegistradoPorUsuario { get; set; }
     }
 }

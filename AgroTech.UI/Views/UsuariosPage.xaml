@@ -23,8 +23,8 @@
                     </Grid.ColumnDefinitions>
                     
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Nombre de Usuario (Único)" Margin="0,0,0,5"/>
-                        <ui:TextBox x:Name="txtUserName" PlaceholderText="Ej. afernandez"/>
+                        <TextBlock Text="Nombre Completo" Margin="0,0,0,5"/>
+                        <ui:TextBox x:Name="txtNombreCompleto" PlaceholderText="Ej. Ana Fernández"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Correo Electrónico" Margin="0,0,0,5"/>
@@ -41,22 +41,18 @@
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Rol del Sistema" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="cmbRoles" Height="35">
-                            <ComboBoxItem Content="Seleccione un rol..." IsSelected="True"/>
-                            <ComboBoxItem Content="Administrador"/>
-                            <ComboBoxItem Content="Supervisor"/>
-                            <ComboBoxItem Content="Trabajador"/>
-                            <ComboBoxItem Content="Encargado de Producción"/>
-                        </ComboBox>
+                        <ComboBox x:Name="cmbRoles" Height="35" DisplayMemberPath="NombreRol"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Contraseña Temporal" Margin="0,0,0,5"/>
-                        <ui:PasswordBox x:Name="txtPassTemp" PlaceholderText="***"/>
+                        <ui:PasswordBox x:Name="txtPassTemp" PlaceholderText="Dejar en blanco para no cambiarla"/>
                     </StackPanel>
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ui:Button Content="Eliminar Usuario" Appearance="Danger" Margin="0,0,10,0" Click="EliminarUsuario_Click" Icon="{ui:SymbolIcon Delete24}"/>
+                    <ui:Button Content="Limpiar" Appearance="Secondary" Margin="0,0,10,0" Click="LimpiarUsuario_Click"/>
+                    <ui:Button Content="Reactivar" Appearance="Secondary" Margin="0,0,10,0" Click="ReactivarUsuario_Click"/>
+                    <ui:Button Content="Suspender Usuario" Appearance="Danger" Margin="0,0,10,0" Click="EliminarUsuario_Click" Icon="{ui:SymbolIcon Delete24}"/>
                     <ui:Button Content="Modificar" Appearance="Caution" Margin="0,0,10,0" Click="ModificarUsuario_Click" Icon="{ui:SymbolIcon Edit24}"/>
                     <ui:Button Content="Registrar Usuario" Appearance="Primary" Click="RegistrarUsuario_Click" Icon="{ui:SymbolIcon PersonAdd24}"/>
                 </StackPanel>
@@ -65,15 +61,17 @@
 
         <Border Grid.Row="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
             <DataGrid x:Name="GridUsuarios" AutoGenerateColumns="False" 
-                      CanUserAddRows="False" IsReadOnly="True" 
+                      CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single"
                       Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0"
+                      SelectionChanged="GridUsuarios_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding IdUsuario}" Width="50"/>
                     <DataGridTextColumn Header="Nombre Completo" Binding="{Binding NombreCompleto}" Width="*"/>
-                    <DataGridTextColumn Header="Correo Electrónico" Binding="{Binding CorreoElectronico}" Width="250"/>
-                    <DataGridTextColumn Header="Rol" Binding="{Binding Rol.Nombre}" Width="150"/>
-                    <DataGridTextColumn Header="Fecha Registro" Binding="{Binding FechaRegistro, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
+                    <DataGridTextColumn Header="Correo Electrónico" Binding="{Binding CorreoElectronico}" Width="230"/>
+                    <DataGridTextColumn Header="Rol" Binding="{Binding Rol.NombreRol}" Width="130"/>
+                    <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
+                    <DataGridTextColumn Header="Fecha Registro" Binding="{Binding FechaCreacion, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
