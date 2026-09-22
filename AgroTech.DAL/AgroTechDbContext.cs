@@ -5,6 +5,14 @@ namespace AgroTech.DAL
 {
     public class AgroTechDbContext : DbContext
     {
+        public AgroTechDbContext()
+        {
+        }
+
+        public AgroTechDbContext(DbContextOptions<AgroTechDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<Rol> Roles { get; set; } = null!;
         public DbSet<Usuario> Usuarios { get; set; } = null!;
         public DbSet<Parcela> Parcelas { get; set; } = null!;

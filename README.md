@@ -58,3 +58,11 @@ Se recomienda cambiar estas contraseñas (o crear usuarios reales) desde la pant
 
 * RF-05 (plan de pruebas unitarias automatizado) aún no está implementado como proyecto de tests.
 * No hay una pantalla dedicada para editar/eliminar cultivos individuales (por ahora se listan y se registran junto a la parcela).
+
+
+| Rol | Correo Electrónico | Contraseña |
+| :--- | :--- | :--- |
+| **Administrador** | a.valenzuela@agrotech.cl | `Admin123!` |
+| **Supervisor** | m.fuentes@agrotech.cl | `Super123!` |
+| **Trabajador** | p.carrasco@agrotech.cl | `Trabajo123!` |
+

@@ -12,16 +12,24 @@ namespace AgroTech.BLL
     {
         private static readonly Regex CorreoInstitucional =
             new(@"^[A-Za-z0-9+_.-]+@agrotech\.cl$", RegexOptions.Compiled);
+        private readonly Func<AgroTechDbContext> _contextFactory;
+
+        public UsuarioService() : this(() => new AgroTechDbContext()) { }
+
+        public UsuarioService(Func<AgroTechDbContext> contextFactory)
+        {
+            _contextFactory = contextFactory;
+        }
 
         public List<Rol> ObtenerRoles()
         {
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             return db.Roles.AsNoTracking().OrderBy(r => r.IdRol).ToList();
         }
 
         public List<Usuario> ObtenerTodos()
         {
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             return db.Usuarios.Include(u => u.Rol).AsNoTracking().OrderBy(u => u.NombreCompleto).ToList();
         }
 
@@ -32,7 +40,7 @@ namespace AgroTech.BLL
             if (string.IsNullOrWhiteSpace(passwordTemporal) || passwordTemporal.Length < 6)
                 throw new ArgumentException("La contraseña temporal debe tener al menos 6 caracteres.");
 
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
 
             correo = correo.Trim();
             if (db.Usuarios.Any(u => u.CorreoElectronico == correo))
@@ -60,7 +68,7 @@ namespace AgroTech.BLL
         {
             ValidarDatosBasicos(nombreCompleto, correo, idRol);
 
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             var usuario = db.Usuarios.Find(idUsuario)
                 ?? throw new ArgumentException("El usuario indicado no existe.");
 
@@ -90,7 +98,7 @@ namespace AgroTech.BLL
             if (idUsuario == idUsuarioQueEjecutaLaAccion)
                 throw new InvalidOperationException("No puedes suspender tu propia cuenta mientras tienes la sesión activa.");
 
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             var usuario = db.Usuarios.Find(idUsuario)
                 ?? throw new ArgumentException("El usuario indicado no existe.");
 
@@ -100,7 +108,7 @@ namespace AgroTech.BLL
 
         public void ReactivarUsuario(int idUsuario)
         {
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             var usuario = db.Usuarios.Find(idUsuario)
                 ?? throw new ArgumentException("El usuario indicado no existe.");
 

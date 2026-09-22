@@ -9,6 +9,14 @@ namespace AgroTech.BLL
 {
     public class ParcelaService
     {
+        private readonly Func<AgroTechDbContext> _contextFactory;
+
+        public ParcelaService() : this(() => new AgroTechDbContext()) { }
+
+        public ParcelaService(Func<AgroTechDbContext> contextFactory)
+        {
+            _contextFactory = contextFactory;
+        }
         public Parcela RegistrarNuevaParcela(string nombre, string ubicacion, decimal dimensionesM2, int idUsuarioRegistrador)
         {
             if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(ubicacion))
@@ -30,7 +38,7 @@ namespace AgroTech.BLL
                 FechaRegistro = DateTime.Now
             };
 
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             db.Parcelas.Add(parcela);
             db.SaveChanges();
             return parcela;
@@ -38,7 +46,7 @@ namespace AgroTech.BLL
 
         public List<Parcela> ObtenerTodas()
         {
-            using var db = new AgroTechDbContext();
+            using var db = _contextFactory();
             return db.Parcelas.AsNoTracking().OrderByDescending(p => p.FechaRegistro).ToList();
         }
     }
