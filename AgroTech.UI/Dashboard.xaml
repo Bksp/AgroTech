@@ -1,4 +1,4 @@
-﻿<ui:FluentWindow x:Class="AgroTech.UI.Dashboard"
+<ui:FluentWindow x:Class="AgroTech.UI.Dashboard"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -21,9 +21,9 @@
 
         <Border Grid.Row="1" Padding="20,8" Background="{DynamicResource ControlFillColorDefaultBrush}">
             <DockPanel LastChildFill="False">
-                <ui:TextBlock x:Name="txtUsuarioSesion" FontTypography="BodyStrong" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <ui:TextBlock x:Name="txtUsuarioSesion" Text="{Binding UsuarioSesion}" FontTypography="BodyStrong" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                 <ui:Button x:Name="btnCerrarSesion" Content="Cerrar sesión" Appearance="Secondary"
-                           DockPanel.Dock="Right" Padding="10,4" Click="CerrarSesion_Click"/>
+                           DockPanel.Dock="Right" Padding="10,4" Command="{Binding CerrarSesionCommand}"/>
             </DockPanel>
         </Border>
 
@@ -34,7 +34,7 @@
                            IsBackButtonVisible="Collapsed">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem x:Name="navParcelas" Content="Parcelas y Cultivos" Icon="{ui:SymbolIcon Map24}" TargetPageType="{x:Type views:ParcelasPage}" />
-                <ui:NavigationViewItem x:Name="navUsuarios" Content="Gestión de Usuarios" Icon="{ui:SymbolIcon People24}" TargetPageType="{x:Type views:UsuariosPage}" />
+                <ui:NavigationViewItem x:Name="navUsuarios" Content="Gestión de Usuarios" Icon="{ui:SymbolIcon People24}" TargetPageType="{x:Type views:UsuariosPage}" Visibility="{Binding UsuariosVisibility}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
 

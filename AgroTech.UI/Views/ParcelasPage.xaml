@@ -1,4 +1,4 @@
-﻿<Page x:Class="AgroTech.UI.Views.ParcelasPage"
+<Page x:Class="AgroTech.UI.Views.ParcelasPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -27,15 +27,15 @@
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Nombre de la Parcela" Margin="0,0,0,5"/>
-                        <ui:TextBox x:Name="txtNombreParcela" PlaceholderText="Ej. Invernadero Norte"/>
+                        <ui:TextBox x:Name="txtNombreParcela" Text="{Binding NombreParcela, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PuedeEditar}" PlaceholderText="Ej. Invernadero Norte"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Ubicación" Margin="0,0,0,5"/>
-                        <ui:TextBox x:Name="txtUbicacion" PlaceholderText="Ej. Sector Maule"/>
+                        <ui:TextBox x:Name="txtUbicacion" Text="{Binding Ubicacion, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PuedeEditar}" PlaceholderText="Ej. Sector Maule"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4">
                         <TextBlock Text="Dimensiones (m²)" Margin="0,0,0,5"/>
-                        <ui:TextBox x:Name="txtDimensiones" PlaceholderText="Ej. 500"/>
+                        <ui:TextBox x:Name="txtDimensiones" Text="{Binding Dimensiones, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PuedeEditar}" PlaceholderText="Ej. 500"/>
                     </StackPanel>
                 </Grid>
 
@@ -53,7 +53,7 @@
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Tipo de Cultivo" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="cmbTipoCultivo" Height="35">
+                        <ComboBox x:Name="cmbTipoCultivo" SelectedItem="{Binding SelectedTipoCultivo}" IsEnabled="{Binding PuedeEditar}" Height="35">
                             <ComboBoxItem Content="Seleccione un cultivo..." IsSelected="True"/>
                             <ComboBoxItem Content="Tomates"/>
                             <ComboBoxItem Content="Lechugas"/>
@@ -62,17 +62,17 @@
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Fecha de Siembra" Margin="0,0,0,5"/>
-                        <DatePicker x:Name="dpFechaSiembra" Height="35"/>
+                        <DatePicker x:Name="dpFechaSiembra" SelectedDate="{Binding FechaSiembra}" IsEnabled="{Binding PuedeEditar}" Height="35"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4">
                         <TextBlock Text="Fecha Est. Cosecha" Margin="0,0,0,5"/>
-                        <DatePicker x:Name="dpFechaCosecha" Height="35"/>
+                        <DatePicker x:Name="dpFechaCosecha" SelectedDate="{Binding FechaCosecha}" IsEnabled="{Binding PuedeEditar}" Height="35"/>
                     </StackPanel>
                 </Grid>
 
-                <StackPanel x:Name="panelAccionesParcela" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ui:Button Content="Limpiar Campos" Appearance="Secondary" Margin="0,0,10,0" Click="LimpiarParcelas_Click"/>
-                    <ui:Button Content="Guardar Registro" Appearance="Primary" Click="GuardarParcela_Click" Icon="{ui:SymbolIcon Save24}"/>
+                <StackPanel x:Name="panelAccionesParcela" Visibility="{Binding AccionesVisibility}" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ui:Button Content="Limpiar Campos" Appearance="Secondary" Margin="0,0,10,0" Command="{Binding LimpiarCommand}"/>
+                    <ui:Button Content="Guardar Registro" Appearance="Primary" Command="{Binding GuardarCommand}" Icon="{ui:SymbolIcon Save24}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -87,7 +87,7 @@
             <Border Grid.Column="0" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
                 <DockPanel>
                     <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Parcelas Registradas" Margin="5,0,0,10"/>
-                    <DataGrid x:Name="GridParcelas" AutoGenerateColumns="False"
+                    <DataGrid x:Name="GridParcelas" AutoGenerateColumns="False" ItemsSource="{Binding Parcelas}"
                               CanUserAddRows="False" IsReadOnly="True"
                               Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
                               HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
@@ -105,7 +105,7 @@
             <Border Grid.Column="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
                 <DockPanel>
                     <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Cultivos Registrados" Margin="5,0,0,10"/>
-                    <DataGrid x:Name="GridCultivos" AutoGenerateColumns="False"
+                    <DataGrid x:Name="GridCultivos" AutoGenerateColumns="False" ItemsSource="{Binding Cultivos}"
                               CanUserAddRows="False" IsReadOnly="True"
                               Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
                               HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">

@@ -11,22 +11,20 @@ namespace AgroTech.DAL
         public DbSet<Cultivo> Cultivos { get; set; } = null!;
 
 
-        private const string Server = "localhost";
-        private const string Port = "3306";
-        private const string Database = "agrotech_db";
-        private const string UserId = "root";
-        private const string Password = "";
+        private const string Host = "aws-0-us-east-1.pooler.supabase.com";
+        private const string Port = "5432";
+        private const string DbName = "postgres";
+        private const string UserId = "postgres.eonkkmzfswxhgljrplmt";
+        private const string Password = "agrotech1010.";
 
         public static string ConnectionString =>
-            $"Server={Server};Port={Port};Database={Database};User Id={UserId};Password={Password};";
+            $"Host={Host};Port={Port};Database={DbName};Username={UserId};Password={Password};SSL Mode=Require;Trust Server Certificate=true;";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(
-                    ConnectionString,
-                    ServerVersion.AutoDetect(ConnectionString));
+                optionsBuilder.UseNpgsql(ConnectionString);
             }
         }
 
@@ -35,7 +33,7 @@ namespace AgroTech.DAL
             //---------------- Roles ----------------
             modelBuilder.Entity<Rol>(entity =>
             {
-                entity.ToTable("Roles");
+                entity.ToTable("roles");
                 entity.HasKey(r => r.IdRol);
                 entity.Property(r => r.IdRol).HasColumnName("id_rol");
                 entity.Property(r => r.NombreRol).HasColumnName("nombre_rol");
@@ -45,7 +43,7 @@ namespace AgroTech.DAL
             //---------------- Usuarios ----------------
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.ToTable("Usuarios");
+                entity.ToTable("usuarios");
                 entity.HasKey(u => u.IdUsuario);
                 entity.Property(u => u.IdUsuario).HasColumnName("id_usuario");
                 entity.Property(u => u.IdRol).HasColumnName("id_rol");
@@ -64,7 +62,7 @@ namespace AgroTech.DAL
             //---------------- Parcelas ----------------
             modelBuilder.Entity<Parcela>(entity =>
             {
-                entity.ToTable("Parcelas");
+                entity.ToTable("parcelas");
                 entity.HasKey(p => p.IdParcela);
                 entity.Property(p => p.IdParcela).HasColumnName("id_parcela");
                 entity.Property(p => p.Nombre).HasColumnName("nombre");
@@ -82,7 +80,7 @@ namespace AgroTech.DAL
             //---------------- Cultivos ----------------
             modelBuilder.Entity<Cultivo>(entity =>
             {
-                entity.ToTable("Cultivos");
+                entity.ToTable("cultivos");
                 entity.HasKey(c => c.IdCultivo);
                 entity.Property(c => c.IdCultivo).HasColumnName("id_cultivo");
                 entity.Property(c => c.IdParcela).HasColumnName("id_parcela");

@@ -1,4 +1,4 @@
-﻿using AgroTech.DAL;
+using AgroTech.UI.ViewModels;
 using Wpf.Ui.Controls;
 
 namespace AgroTech.UI
@@ -9,26 +9,17 @@ namespace AgroTech.UI
         {
             InitializeComponent();
 
-            var usuario = SessionManager.CurrentUser;
-            txtUsuarioSesion.Text = usuario != null
-                ? $"{usuario.NombreCompleto} · {usuario.Rol?.NombreRol}"
-                : string.Empty;
-
-            // RF-03 (RBAC): sólo el Administrador gestiona usuarios.
-            navUsuarios.Visibility = SessionManager.EsAdministrador
-                ? System.Windows.Visibility.Visible
-                : System.Windows.Visibility.Collapsed;
+            var viewModel = new DashboardViewModel();
+            viewModel.RequestClose = this.Close;
+            viewModel.RequestShowLogin = () =>
+            {
+                var login = new MainWindow();
+                login.Show();
+            };
+            this.DataContext = viewModel;
 
             // Navegar automáticamente a la primera página al cargar
             Loaded += (s, e) => RootNavigation.Navigate(typeof(Views.ParcelasPage));
-        }
-
-        private void CerrarSesion_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SessionManager.CerrarSesion();
-            var login = new MainWindow();
-            login.Show();
-            this.Close();
         }
     }
 }

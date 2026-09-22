@@ -1,4 +1,4 @@
-﻿<Page x:Class="AgroTech.UI.Views.UsuariosPage"
+<Page x:Class="AgroTech.UI.Views.UsuariosPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -24,11 +24,11 @@
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Nombre Completo" Margin="0,0,0,5"/>
-                        <ui:TextBox x:Name="txtNombreCompleto" PlaceholderText="Ej. Ana Fernández"/>
+                        <ui:TextBox x:Name="txtNombreCompleto" Text="{Binding NombreCompleto, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Ej. Ana Fernández"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Correo Electrónico" Margin="0,0,0,5"/>
-                        <ui:TextBox x:Name="txtCorreo" PlaceholderText="usuario@agrotech.cl"/>
+                        <ui:TextBox x:Name="txtCorreo" Text="{Binding Correo, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="usuario@agrotech.cl"/>
                     </StackPanel>
                 </Grid>
 
@@ -41,7 +41,7 @@
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Rol del Sistema" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="cmbRoles" Height="35" DisplayMemberPath="NombreRol"/>
+                        <ComboBox x:Name="cmbRoles" Height="35" ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRol}" DisplayMemberPath="NombreRol"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Contraseña Temporal" Margin="0,0,0,5"/>
@@ -50,21 +50,20 @@
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ui:Button Content="Limpiar" Appearance="Secondary" Margin="0,0,10,0" Click="LimpiarUsuario_Click"/>
-                    <ui:Button Content="Reactivar" Appearance="Secondary" Margin="0,0,10,0" Click="ReactivarUsuario_Click"/>
-                    <ui:Button Content="Suspender Usuario" Appearance="Danger" Margin="0,0,10,0" Click="EliminarUsuario_Click" Icon="{ui:SymbolIcon Delete24}"/>
-                    <ui:Button Content="Modificar" Appearance="Caution" Margin="0,0,10,0" Click="ModificarUsuario_Click" Icon="{ui:SymbolIcon Edit24}"/>
-                    <ui:Button Content="Registrar Usuario" Appearance="Primary" Click="RegistrarUsuario_Click" Icon="{ui:SymbolIcon PersonAdd24}"/>
+                    <ui:Button Content="Limpiar" Appearance="Secondary" Margin="0,0,10,0" Command="{Binding LimpiarCommand}" CommandParameter="{Binding ElementName=txtPassTemp}"/>
+                    <ui:Button Content="Reactivar" Appearance="Secondary" Margin="0,0,10,0" Command="{Binding ReactivarCommand}" CommandParameter="{Binding ElementName=txtPassTemp}"/>
+                    <ui:Button Content="Suspender Usuario" Appearance="Danger" Margin="0,0,10,0" Command="{Binding EliminarCommand}" CommandParameter="{Binding ElementName=txtPassTemp}" Icon="{ui:SymbolIcon Delete24}"/>
+                    <ui:Button Content="Modificar" Appearance="Caution" Margin="0,0,10,0" Command="{Binding ModificarCommand}" CommandParameter="{Binding ElementName=txtPassTemp}" Icon="{ui:SymbolIcon Edit24}"/>
+                    <ui:Button Content="Registrar Usuario" Appearance="Primary" Command="{Binding RegistrarCommand}" CommandParameter="{Binding ElementName=txtPassTemp}" Icon="{ui:SymbolIcon PersonAdd24}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <Border Grid.Row="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
-            <DataGrid x:Name="GridUsuarios" AutoGenerateColumns="False" 
+            <DataGrid x:Name="GridUsuarios" AutoGenerateColumns="False" ItemsSource="{Binding Usuarios}" SelectedItem="{Binding SelectedUsuario}"
                       CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single"
                       Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0"
-                      SelectionChanged="GridUsuarios_SelectionChanged">
+                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding IdUsuario}" Width="50"/>
                     <DataGridTextColumn Header="Nombre Completo" Binding="{Binding NombreCompleto}" Width="*"/>

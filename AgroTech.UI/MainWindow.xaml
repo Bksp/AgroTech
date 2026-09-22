@@ -21,10 +21,10 @@
             <ui:TextBlock FontTypography="Title" Text="AgroTech" HorizontalAlignment="Center" Margin="0,0,0,5"/>
             <ui:TextBlock FontTypography="Body" Text="Gestión Agrícola Inteligente" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,40"/>
 
-            <ui:TextBox x:Name="txtUsername" PlaceholderText="Usuario Institucional" Icon="{ui:SymbolIcon Person24}" Margin="0,0,0,15"/>
+            <ui:TextBox x:Name="txtUsername" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Usuario Institucional" Icon="{ui:SymbolIcon Person24}" Margin="0,0,0,15"/>
             <ui:PasswordBox x:Name="txtPassword" PlaceholderText="Contraseña" Icon="{ui:SymbolIcon Password24}" Margin="0,0,0,25"/>
 
-            <ui:Button Content="Iniciar Sesión" Appearance="Primary" HorizontalAlignment="Stretch" Click="Login_Click"/>
+            <ui:Button Content="Iniciar Sesión" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=txtPassword}" Appearance="Primary" HorizontalAlignment="Stretch" />
         </StackPanel>
     </Grid>
 </ui:FluentWindow>
