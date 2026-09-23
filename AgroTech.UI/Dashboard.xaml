@@ -34,7 +34,7 @@
                            IsBackButtonVisible="Collapsed">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem x:Name="navParcelas" Content="Gestión de Parcelas" Icon="{ui:SymbolIcon Map24}" TargetPageType="{x:Type views:ParcelasPage}" />
-                <ui:NavigationViewItem x:Name="navCultivos" Content="Gestión de Cultivos" Icon="{ui:SymbolIcon Leaf24}" TargetPageType="{x:Type views:CultivosPage}" />
+                <ui:NavigationViewItem x:Name="navCultivos" Content="Gestión de Cultivos" Icon="{ui:SymbolIcon LeafOne24}" TargetPageType="{x:Type views:CultivosPage}" />
                 <ui:NavigationViewItem x:Name="navUsuarios" Content="Gestión de Usuarios" Icon="{ui:SymbolIcon People24}" TargetPageType="{x:Type views:UsuariosPage}" Visibility="{Binding UsuariosVisibility}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>

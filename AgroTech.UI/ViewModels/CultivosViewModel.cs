@@ -20,7 +20,7 @@ namespace AgroTech.UI.ViewModels
         private Cultivo? _cultivoSeleccionado;
 
         [ObservableProperty]
-        private string _estadoSeleccionado = string.Empty;
+        private string _estadoSeleccionado = "Activo";
 
         [ObservableProperty]
         private DateTime? _fechaSiembraSeleccionada;
@@ -58,8 +58,11 @@ namespace AgroTech.UI.ViewModels
             }
         }
 
+        public bool HayCultivoSeleccionado => CultivoSeleccionado != null;
+
         partial void OnCultivoSeleccionadoChanged(Cultivo? value)
         {
+            OnPropertyChanged(nameof(HayCultivoSeleccionado));
             if (value != null)
             {
                 EstadoSeleccionado = value.Estado ?? "Activo";
@@ -68,7 +71,7 @@ namespace AgroTech.UI.ViewModels
             }
             else
             {
-                EstadoSeleccionado = string.Empty;
+                EstadoSeleccionado = "Activo";
                 FechaSiembraSeleccionada = null;
                 FechaCosechaSeleccionada = null;
             }
@@ -103,7 +106,10 @@ namespace AgroTech.UI.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error al actualizar", MessageBoxButton.OK, MessageBoxImage.Error);
+                var msg = ex.Message;
+                if (ex.InnerException != null)
+                    msg += $"\nDetalle: {ex.InnerException.Message}";
+                MessageBox.Show(msg, "Error al actualizar", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

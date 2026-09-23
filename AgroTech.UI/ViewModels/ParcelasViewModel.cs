@@ -32,7 +32,26 @@ namespace AgroTech.UI.ViewModels
         private string _dimensiones = string.Empty;
 
         [ObservableProperty]
-        private ComboBoxItem? _selectedTipoCultivo;
+        private string? _selectedTipoCultivo = "Seleccione un cultivo...";
+
+        public ObservableCollection<string> TiposDeCultivo { get; } = new()
+        {
+            "Seleccione un cultivo...",
+            "Tomate",
+            "Lechuga",
+            "Zanahoria",
+            "Cebolla",
+            "Papa (Patata)",
+            "Maíz (Choclo)",
+            "Ajo",
+            "Poroto (Frijol)",
+            "Zapallo",
+            "Sandía",
+            "Melón",
+            "Trigo",
+            "Cereza",
+            "Manzana"
+        };
 
         [ObservableProperty]
         private DateTime? _fechaSiembra;
@@ -72,7 +91,7 @@ namespace AgroTech.UI.ViewModels
             NombreParcela = string.Empty;
             Ubicacion = string.Empty;
             Dimensiones = string.Empty;
-            SelectedTipoCultivo = null; // Needs logic to select index 0 if bound differently, but null resets it or empty.
+            SelectedTipoCultivo = TiposDeCultivo[0];
             FechaSiembra = null;
             FechaCosecha = null;
         }
@@ -101,7 +120,7 @@ namespace AgroTech.UI.ViewModels
                     dimensionesDecimal,
                     usuarioActual.IdUsuario);
 
-                var tipoCultivoSeleccionado = SelectedTipoCultivo?.Content?.ToString();
+                var tipoCultivoSeleccionado = SelectedTipoCultivo;
                 
                 // Assuming "Seleccione un cultivo..." is either null because index 0 doesn't match a value, 
                 // or we just check if it's an actual crop.

@@ -7,10 +7,12 @@ namespace AgroTech.DAL
     {
         public AgroTechDbContext()
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public AgroTechDbContext(DbContextOptions<AgroTechDbContext> options) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public DbSet<Rol> Roles { get; set; } = null!;
@@ -93,11 +95,11 @@ namespace AgroTech.DAL
                 entity.Property(c => c.IdCultivo).HasColumnName("id_cultivo");
                 entity.Property(c => c.IdParcela).HasColumnName("id_parcela");
                 entity.Property(c => c.TipoCultivo).HasColumnName("tipo_cultivo");
-                entity.Property(c => c.FechaSiembra).HasColumnName("fecha_siembra");
-                entity.Property(c => c.FechaEstimadaCosecha).HasColumnName("fecha_estimada_cosecha");
+                entity.Property(c => c.FechaSiembra).HasColumnName("fecha_siembra").HasColumnType("date");
+                entity.Property(c => c.FechaEstimadaCosecha).HasColumnName("fecha_estimada_cosecha").HasColumnType("date");
                 entity.Property(c => c.Estado).HasColumnName("estado");
                 entity.Property(c => c.RegistradoPor).HasColumnName("registrado_por");
-                entity.Property(c => c.FechaRegistro).HasColumnName("fecha_registro");
+                entity.Property(c => c.FechaRegistro).HasColumnName("fecha_registro").HasColumnType("timestamp with time zone");
 
                 entity.HasOne(c => c.Parcela)
                       .WithMany(p => p.Cultivos)

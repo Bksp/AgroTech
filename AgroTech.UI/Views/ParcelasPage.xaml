@@ -53,12 +53,7 @@
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Tipo de Cultivo" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="cmbTipoCultivo" SelectedItem="{Binding SelectedTipoCultivo}" IsEnabled="{Binding PuedeEditar}" Height="35">
-                            <ComboBoxItem Content="Seleccione un cultivo..." IsSelected="True"/>
-                            <ComboBoxItem Content="Tomates"/>
-                            <ComboBoxItem Content="Lechugas"/>
-                            <ComboBoxItem Content="Zanahorias"/>
-                        </ComboBox>
+                        <ComboBox x:Name="cmbTipoCultivo" ItemsSource="{Binding TiposDeCultivo}" SelectedItem="{Binding SelectedTipoCultivo}" IsEnabled="{Binding PuedeEditar}" Height="35" />
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Fecha de Siembra" Margin="0,0,0,5"/>
@@ -87,36 +82,60 @@
             <Border Grid.Column="0" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
                 <DockPanel>
                     <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Parcelas Registradas" Margin="5,0,0,10"/>
-                    <DataGrid x:Name="GridParcelas" AutoGenerateColumns="False" ItemsSource="{Binding Parcelas}"
+                    <ui:DataGrid x:Name="GridParcelas" AutoGenerateColumns="False" ItemsSource="{Binding Parcelas}"
                               CanUserAddRows="False" IsReadOnly="True"
-                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
-                        <DataGrid.Columns>
+                              Background="Transparent" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                        <ui:DataGrid.Resources>
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="12,8" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource SystemAccentColorPrimaryBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:DataGrid.Resources>
+                        <ui:DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding IdParcela}" Width="40"/>
                             <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
                             <DataGridTextColumn Header="Ubicación" Binding="{Binding Ubicacion}" Width="130"/>
                             <DataGridTextColumn Header="m²" Binding="{Binding DimensionesM2}" Width="90"/>
                             <DataGridTextColumn Header="Registro" Binding="{Binding FechaRegistro, StringFormat={}{0:dd/MM/yyyy}}" Width="90"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        </ui:DataGrid.Columns>
+                    </ui:DataGrid>
                 </DockPanel>
             </Border>
 
             <Border Grid.Column="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
                 <DockPanel>
                     <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Cultivos Registrados" Margin="5,0,0,10"/>
-                    <DataGrid x:Name="GridCultivos" AutoGenerateColumns="False" ItemsSource="{Binding Cultivos}"
+                    <ui:DataGrid x:Name="GridCultivos" AutoGenerateColumns="False" ItemsSource="{Binding Cultivos}"
                               CanUserAddRows="False" IsReadOnly="True"
-                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
-                        <DataGrid.Columns>
+                              Background="Transparent" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                        <ui:DataGrid.Resources>
+                            <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="12,8" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource SystemAccentColorPrimaryBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:DataGrid.Resources>
+                        <ui:DataGrid.Columns>
                             <DataGridTextColumn Header="Parcela" Binding="{Binding Parcela.Nombre}" Width="*"/>
                             <DataGridTextColumn Header="Cultivo" Binding="{Binding TipoCultivo}" Width="110"/>
                             <DataGridTextColumn Header="Siembra" Binding="{Binding FechaSiembra, StringFormat={}{0:dd/MM/yyyy}}" Width="90"/>
                             <DataGridTextColumn Header="Cosecha Est." Binding="{Binding FechaEstimadaCosecha, StringFormat={}{0:dd/MM/yyyy}}" Width="90"/>
                             <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="110"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        </ui:DataGrid.Columns>
+                    </ui:DataGrid>
                 </DockPanel>
             </Border>
         </Grid>

@@ -60,19 +60,31 @@
         </Border>
 
         <Border Grid.Row="2" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10">
-            <DataGrid x:Name="GridUsuarios" AutoGenerateColumns="False" ItemsSource="{Binding Usuarios}" SelectedItem="{Binding SelectedUsuario}"
+            <ui:DataGrid x:Name="GridUsuarios" AutoGenerateColumns="False" ItemsSource="{Binding Usuarios}" SelectedItem="{Binding SelectedUsuario}"
                       CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single"
-                      Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                      HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
-                <DataGrid.Columns>
+                      Background="Transparent" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                <ui:DataGrid.Resources>
+                    <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Padding" Value="12,8" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SystemAccentColorPrimaryBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:DataGrid.Resources>
+                <ui:DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding IdUsuario}" Width="50"/>
                     <DataGridTextColumn Header="Nombre Completo" Binding="{Binding NombreCompleto}" Width="*"/>
                     <DataGridTextColumn Header="Correo Electrónico" Binding="{Binding CorreoElectronico}" Width="230"/>
                     <DataGridTextColumn Header="Rol" Binding="{Binding Rol.NombreRol}" Width="130"/>
                     <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
                     <DataGridTextColumn Header="Fecha Registro" Binding="{Binding FechaCreacion, StringFormat={}{0:dd/MM/yyyy}}" Width="120"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                </ui:DataGrid.Columns>
+            </ui:DataGrid>
         </Border>
     </Grid>
 </Page>

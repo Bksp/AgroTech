@@ -16,19 +16,31 @@
         <Border Grid.Row="1" CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Padding="10" Margin="0,0,0,20">
             <DockPanel>
                 <ui:TextBlock DockPanel.Dock="Top" FontTypography="Subtitle" Text="Lista de Cultivos" Margin="5,0,0,10"/>
-                <DataGrid x:Name="GridCultivos" AutoGenerateColumns="False" ItemsSource="{Binding Cultivos}" SelectedItem="{Binding CultivoSeleccionado, Mode=TwoWay}"
+                <ui:DataGrid x:Name="GridCultivos" AutoGenerateColumns="False" ItemsSource="{Binding Cultivos}" SelectedItem="{Binding CultivoSeleccionado, Mode=TwoWay}"
                           CanUserAddRows="False" IsReadOnly="True"
-                          Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="{DynamicResource ControlFillColorTransparentBrush}"
-                          HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
-                    <DataGrid.Columns>
+                          Background="Transparent" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource DividerStrokeColorDefaultBrush}" BorderThickness="0">
+                    <ui:DataGrid.Resources>
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="12,8" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource SystemAccentColorPrimaryBrush}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:DataGrid.Resources>
+                    <ui:DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding IdCultivo}" Width="50"/>
                         <DataGridTextColumn Header="Parcela" Binding="{Binding Parcela.Nombre}" Width="*"/>
                         <DataGridTextColumn Header="Cultivo" Binding="{Binding TipoCultivo}" Width="150"/>
                         <DataGridTextColumn Header="Siembra" Binding="{Binding FechaSiembra, StringFormat={}{0:dd/MM/yyyy}}" Width="100"/>
                         <DataGridTextColumn Header="Cosecha Est." Binding="{Binding FechaEstimadaCosecha, StringFormat={}{0:dd/MM/yyyy}}" Width="100"/>
                         <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="120"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    </ui:DataGrid.Columns>
+                </ui:DataGrid>
             </DockPanel>
         </Border>
 
@@ -36,7 +48,7 @@
             <StackPanel>
                 <ui:TextBlock FontTypography="Subtitle" Text="Editar Cultivo Seleccionado" Margin="0,0,0,15"/>
                 
-                <Grid>
+                <Grid IsEnabled="{Binding HayCultivoSeleccionado}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
@@ -61,7 +73,7 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0" IsEnabled="{Binding HayCultivoSeleccionado}">
                     <ui:Button Content="Eliminar" Appearance="Danger" Margin="0,0,10,0" Command="{Binding EliminarCommand}" Icon="{ui:SymbolIcon Delete24}"/>
                     <ui:Button Content="Guardar Cambios" Appearance="Primary" Command="{Binding GuardarCambiosCommand}" Icon="{ui:SymbolIcon Save24}"/>
                 </StackPanel>

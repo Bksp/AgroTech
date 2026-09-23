@@ -53,6 +53,11 @@ namespace AgroTech.UI.ViewModels
             {
                 Roles = new ObservableCollection<Rol>(_usuarioService.ObtenerRoles());
                 Usuarios = new ObservableCollection<Usuario>(_usuarioService.ObtenerTodos());
+
+                if (SelectedRol == null && Roles.Any())
+                {
+                    SelectedRol = Roles.First();
+                }
             }
             catch (Exception ex)
             {
@@ -69,7 +74,7 @@ namespace AgroTech.UI.ViewModels
             SelectedUsuario = null;
             NombreCompleto = string.Empty;
             Correo = string.Empty;
-            SelectedRol = null;
+            SelectedRol = Roles.FirstOrDefault();
             if (passwordBox != null)
             {
                 passwordBox.Password = string.Empty;
