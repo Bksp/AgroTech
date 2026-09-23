@@ -384,3 +384,4 @@ FodyWeavers.xsd
 
 # Web Tools Publish Profile
 .pubxml.user
+PublishSingle/AgroTech.UI.exe

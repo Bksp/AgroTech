@@ -20,6 +20,9 @@ namespace AgroTech.UI.ViewModels
             }
         }
 
+        [ObservableProperty]
+        private bool _isDarkTheme = true;
+
         public Visibility UsuariosVisibility => SessionManager.EsAdministrador ? Visibility.Visible : Visibility.Collapsed;
 
         [RelayCommand]
@@ -28,6 +31,20 @@ namespace AgroTech.UI.ViewModels
             SessionManager.CerrarSesion();
             RequestShowLogin?.Invoke();
             RequestClose?.Invoke();
+        }
+
+        [RelayCommand]
+        private void ToggleTheme()
+        {
+            IsDarkTheme = !IsDarkTheme;
+            if (IsDarkTheme)
+            {
+                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark);
+            }
+            else
+            {
+                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light);
+            }
         }
     }
 }

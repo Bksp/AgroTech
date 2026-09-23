@@ -8,6 +8,7 @@ namespace AgroTech.UI
         public Dashboard()
         {
             InitializeComponent();
+            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
 
             var viewModel = new DashboardViewModel();
             viewModel.RequestClose = this.Close;

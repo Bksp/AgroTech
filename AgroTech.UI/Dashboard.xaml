@@ -37,6 +37,9 @@
                 <ui:NavigationViewItem x:Name="navCultivos" Content="Gestión de Cultivos" Icon="{ui:SymbolIcon LeafOne24}" TargetPageType="{x:Type views:CultivosPage}" />
                 <ui:NavigationViewItem x:Name="navUsuarios" Content="Gestión de Usuarios" Icon="{ui:SymbolIcon People24}" TargetPageType="{x:Type views:UsuariosPage}" Visibility="{Binding UsuariosVisibility}" />
             </ui:NavigationView.MenuItems>
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="Cambiar Tema" Icon="{ui:SymbolIcon WeatherMoon24}" Command="{Binding ToggleThemeCommand}" />
+            </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
 
     </Grid>
