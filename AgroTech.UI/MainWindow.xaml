@@ -11,7 +11,7 @@
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
         WindowStartupLocation="CenterScreen"
-        Icon="pack://application:,,,/Assets/logo.ico">
+        Icon="pack://application:,,,/Assets/exe_logo.ico">
     
     <Grid>
         <ui:TitleBar Title="🌱 AgroTech" />

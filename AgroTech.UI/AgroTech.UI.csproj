@@ -5,12 +5,13 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\exe_logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <Resource Include="Assets\logo.png" />
     <Resource Include="Assets\logo.ico" />
+    <Resource Include="Assets\exe_logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
