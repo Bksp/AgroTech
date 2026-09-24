@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Windows;
 using System.Windows.Controls;
 using AgroTech.BLL;
@@ -8,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AgroTech.UI.ViewModels
 {
-    public partial class LoginViewModel : ObservableObject
+    public partial class LoginViewModel : ObservableValidator
     {
         private readonly AuthService _authService;
 
@@ -16,6 +17,9 @@ namespace AgroTech.UI.ViewModels
         public Action? RequestShowDashboard { get; set; }
 
         [ObservableProperty]
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessage = "El correo es obligatorio.")]
+        [RegularExpression(@"^[a-zA-Z0-9_.-]+@agrotech\.cl$", ErrorMessage = "Debe ser un correo @agrotech.cl válido (solo letras, números, puntos, guiones).")]
         private string _username = string.Empty;
 
         public LoginViewModel()
@@ -26,6 +30,13 @@ namespace AgroTech.UI.ViewModels
         [RelayCommand]
         private void Login(object? parameter)
         {
+            ValidateAllProperties();
+            if (HasErrors)
+            {
+                MessageBox.Show("Por favor, ingresa un correo válido antes de continuar.", "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (parameter is not Wpf.Ui.Controls.PasswordBox passwordBox) return;
 
             try
